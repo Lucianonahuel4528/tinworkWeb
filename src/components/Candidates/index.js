@@ -17,13 +17,54 @@ import {
 } from "../../services/UserService";
 import { updateOffer } from "../../services/OfferService";
 import Modal from "react-bootstrap/Modal";
+import io from 'socket.io-client';
+import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
+
+// Conectar al servidor de Socket.IO
+const socket = io('http://localhost:5000')
 
 const Candidates = () => {
   const { state } = useLocation();
   const [refresh, setRefresh] = useState(false);
   const [candidate, setCandidate] = useState(null);
   const [show, setShow] = useState(false);
-  useEffect(() => {}, [refresh]);
+
+
+  /*Prueba de chat*/
+  const [name, setName] = useState('');
+  const [message, setMessage] = useState('');
+  const [messages, setMessages] = useState([]);
+
+  useEffect(() => {
+    // Escuchar los eventos desde el servidor
+    socket.on('send name', (username) => {
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { type: 'name', content: `${username}:` },
+      ]);
+    });
+
+    socket.on('send message', (chat) => {
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { type: 'message', content: chat },
+      ]);
+    });
+
+    return () => {
+      // Limpiar los listeners cuando el componente se desmonta
+      socket.off('send name');
+      socket.off('send message');
+    };
+  }, []);
+
+  /******** */
+
+
+
+
+
+
 
   function handleShow(candidateSelected) {
     setShow(true);
@@ -216,6 +257,16 @@ const Candidates = () => {
                 Aptitudes requeridas
               </a>
             </li>
+            <li>
+            <Link
+              to="/chats"
+              state={state} // Pasar el estado aquí
+              className="nav-link link-dark"
+            >
+              <IoChatbubbleEllipsesOutline />
+              Chat
+            </Link>
+          </li>
           </IconContext.Provider>
         </ul>
       </aside>
