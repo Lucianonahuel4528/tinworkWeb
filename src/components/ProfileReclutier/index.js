@@ -133,17 +133,16 @@ function ProfileReclutier() {
         <Card.Body>
           <div className="grid">
             <div className="grid-1">
-              <div className="image-container">
+             <div className="image-container">
                 <img src={url} alt="logo" className="image" onClick={() => setShow(true)} />
                 <button
-                  type="button"
-                  className="boton"
-                  onClick={handleShow}
-                >
+      type="button"
+      className="botonedpro"
+      onClick={handleShow}
+    >
                   Editar foto
                 </button>
-              </div>
-
+             </div>
             </div>
             <div className="grid-2">
               <label htmlFor="name">

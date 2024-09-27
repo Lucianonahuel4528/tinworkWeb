@@ -43,30 +43,22 @@
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
+    padding: 5px 60px;            /* Más ancho (60px) y menos alto (5px) */
+    width: auto;                  /* El ancho lo establece el padding */
+
 }
 
-.image {
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 4px solid rgba(0, 0, 0, 0.5);
-}
-
-.boton {
-    /*background-color: #939393;*/
-    background-color: #1065e6;
-    border: none;
-    border-radius: 5px;
-    text-align: center;
-    text-decoration: none;
-    color: white;
-    display: inline-block;
-    width: 200px;
-    margin: 5px 0px 0px 0px;
-    padding: 5px 0px;
-}
-
+.botonedpro {
+    background-color: #007BFF;   /* Color de fondo */
+    color: white;                /* Color del texto */
+    padding: 0px 40px;           /* Ajusta la altura a 4px y el ancho horizontal a 50px */
+    font-size: 16px;             /* Tamaño de la fuente */
+    border: none;                /* Sin bordes */
+    border-radius: 5px;          /* Bordes redondeados */
+    cursor: pointer;             /* Cambia el cursor al pasar por encima */
+    text-align: center;          /* Centra el texto */
+    transition: background-color 0.3s ease; /* Transición suave */
+  }
 .boton:hover {
     background-color: #0350c2;
 }
@@ -110,3 +102,34 @@
 .botones {
     float: left;
 }
+
+.image-container {
+    display: flex;
+    flex-direction: column;    /* Para que el botón quede debajo de la imagen */
+    align-items: center;       /* Centra la imagen y el botón horizontalmente */
+    margin-bottom: 20px;       /* Añade espacio inferior si es necesario */
+  }
+  
+  .image {
+    width: 150px;              /* Ajusta el tamaño de la imagen */
+    height: 150px;
+    border-radius: 50%;        /* Hace que la imagen sea circular */
+    object-fit: cover;         /* Ajusta la imagen al contenedor sin distorsionar */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    margin-bottom: 10px;       /* Espacio entre la imagen y el botón */
+  }
+  
+  .boton {
+    background-color: #007BFF; /* Color de fondo del botón */
+    color: white;              /* Color del texto */
+    padding: 10px 20px;        /* Espaciado interno */
+    font-size: 16px;           /* Tamaño del texto */
+    border: none;              /* Sin bordes */
+    border-radius: 5px;        /* Bordes redondeados */
+    cursor: pointer;           /* Cursor cambia a "pointer" en hover */
+    transition: background-color 0.3s ease; /* Transición suave */
+  }
+  
+  .boton:hover {
+    background-color: #0056b3; /* Color al pasar el cursor */
+  }
