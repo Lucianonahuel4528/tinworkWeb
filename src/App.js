@@ -9,6 +9,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Register from "./components/Register";
 import Candidates from "./components/Candidates";
 import ProfileReclutier from "./components/ProfileReclutier";
+import Chats from "./components/Chats";
 function App() {
   return (
     <AuthProvider>
@@ -36,6 +37,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <Candidates />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/chats"
+            element={
+              <ProtectedRoute>
+                <Chats />
               </ProtectedRoute>
             }
           />
