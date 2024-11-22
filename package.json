@@ -5,7 +5,7 @@
   "dependencies": {
     "@emotion/react": "^11.9.3",
     "@emotion/styled": "^11.9.3",
-    "@flaticon/flaticon-uicons": "^1.7.0",
+    "@flaticon/flaticon-uicons": "^3.3.1",
     "@mui/icons-material": "^5.8.4",
     "@mui/material": "^5.8.6",
     "@mui/styled-engine": "^5.8.0",
