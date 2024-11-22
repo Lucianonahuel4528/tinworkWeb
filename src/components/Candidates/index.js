@@ -23,13 +23,13 @@ import { updateOffer } from "../../services/OfferService";
 import Modal from "react-bootstrap/Modal";
 import io from 'socket.io-client';
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
-import  { Document, Page,pdfjs } from "react-pdf";
+// import  { Document, Page,pdfjs } from "react-pdf";
 
 
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  'pdfjs-dist/build/pdf.worker.min.mjs',
-  import.meta.url,
-).toString();
+// pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+//   'pdfjs-dist/build/pdf.worker.min.mjs',
+//   import.meta.url,
+// ).toString();
 
 // Conectar al servidor de Socket.IO
 //const socket = io('http://localhost:5000')
@@ -375,7 +375,7 @@ const Candidates = () => {
             <p>{candidate?.description}</p>
           </section>
 
-          <div>
+          {/* <div>
             {console.log("candidate?.cv",cvUrl)}
       {cvUrl ? (
        
@@ -385,7 +385,7 @@ const Candidates = () => {
       ) : (
         <p>No hay currículum disponible</p>
       )}
-    </div>
+    </div> */}
         </Modal.Body>
       </Modal>
     </div>
