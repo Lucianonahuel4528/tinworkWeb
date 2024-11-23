@@ -11,7 +11,7 @@ import { useAuth } from "../../context/AuthContext";
 
 function ProfileReclutier() {
 
-  const { user } = useAuth();
+  const { user,updateUserProfile } = useAuth();
 
   //Manejo de botones
   const [btndescri, setBtndescrip] = useState(false);
@@ -74,6 +74,8 @@ function ProfileReclutier() {
               url,
             };
             updateProfile(dataProfile, user.uid);
+            updateUserProfile({ photoURL: url }); 
+
           })
           .catch((error) => {
             console.log(error.message, "error al obtener la url de la imagen");
