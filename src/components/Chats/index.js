@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
 import "./style.css";
-import { Card } from "react-bootstrap";
 import { BsArrowLeftSquare } from "react-icons/bs";
-import { IoIosPeople, IoMdHeartEmpty } from "react-icons/io";
+import { IoIosPeople } from "react-icons/io";
 import { TbFileDescription } from "react-icons/tb";
 import { AiOutlineStar } from "react-icons/ai";
 import { IconContext } from "react-icons";
-import { TiDeleteOutline } from "react-icons/ti";
 import { BsPersonCircle } from "react-icons/bs";
 import DataTable from "react-data-table-component";
 import { Link, useLocation } from "react-router-dom";
@@ -18,18 +16,14 @@ import {
 } from "../../services/UserService";
 import { updateOffer } from "../../services/OfferService";
 import Modal from "react-bootstrap/Modal";
-import io from 'socket.io-client';
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
 import { IoSend } from 'react-icons/io5';
-import { db } from "../../config/firebase.js";
 import { createMessage, listenForMessages } from "../../services/ChatService.js";
 
-// Conectar al servidor de Socket.IO
-const socket = io('http://localhost:5000')
 
 const Chats = () => {
   const location = useLocation();
-  const state = location.state; // Accedes al state pasado con Link
+  const state = location.state;
   
   const [refresh, setRefresh] = useState(false);
   const [candidate, setCandidate] = useState(null);
@@ -47,52 +41,22 @@ const Chats = () => {
     };
     getUser();
    
-    // Escuchar eventos desde el servidor
-    socket.on('send name', (username) => {
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { type: 'name', content: `${username}:` },
-      ]);
-    });
-
-    socket.on('send message', (chat) => {
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { type: 'message', content: chat },
-      ]);
-    });
-
-    // Limpiar listeners cuando se desmonta el componente
-    return () => {
-      socket.off('send name');
-      socket.off('send message');
-    };
+    
   }, []);
 
   useEffect(() => {
     if (candidate?.uid) { // Asegúrate de que el candidato está seleccionado
-      const unsubscribe = listenForMessages(candidate.uid, setMessages); // Escuchar mensajes del chat de este candidato
-  
+      const unsubscribe = listenForMessages(candidate.uid, setMessages); // Escuchar mensajes del chat de este candidato  
       return () => {
         unsubscribe(); // Limpia la suscripción cuando se cierra la modal o cambia de candidato
       };
     }
   }, [candidate]);
-/*
-  const handleSendMessage = () => {
-    if (message && user.name) {
-      socket.emit('send name', user.name); // Enviar el nombre al servidor
-      socket.emit('send message', message); // Enviar el mensaje al servidor
-      setMessage(''); // Limpiar el campo del mensaje
-    }
-  };
-  */
+
 
   const handleSendMessage = async () => {
     if (message && user.name) {
-      console.log("body",message,"candidate.uid ",candidate.uid,"user.uid",user.uid, user.name)
       await createMessage(message, candidate.uid, user.uid, user.name); // Se usa el UID del candidato  como "chatId"
-
       setMessage(''); // Limpiar el input del mensaje
     }
   };
@@ -103,7 +67,6 @@ const Chats = () => {
 
 
   function handleShow(candidateSelected) {
-    console.log("candidate",candidateSelected)
     setShow(true);
     setCandidate(candidateSelected);
   }
@@ -155,12 +118,21 @@ const Chats = () => {
       center: true,
       cell: (row) => (
         <div>
-          <BsPersonCircle
-            size="2em"
-            type="button"
-            onClick={() => handleShow(row)}
-          />
-        </div>
+        {row.imageProfile ? (
+            <img
+                src={row.imageProfile}
+                alt="Profile"
+                style={{ width: "3em", height: "3em", borderRadius: "50%" }}
+                onClick={() => handleShow(row)}
+            />
+        ) : (
+            <BsPersonCircle
+                size="3em"
+                type="button"
+                onClick={() => handleShow(row)}
+            />
+        )}
+    </div>
       ),
     },
     {
