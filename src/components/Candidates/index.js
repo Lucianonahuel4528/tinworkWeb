@@ -11,7 +11,6 @@ import { TiDeleteOutline } from "react-icons/ti";
 import { BsPersonCircle } from "react-icons/bs";
 import DataTable from "react-data-table-component";
 import IconButton from '@mui/material/IconButton';
-import DeleteIcon from '@mui/icons-material/Delete';
 import Tooltip from '@mui/material/Tooltip';
 import { Link, useLocation } from "react-router-dom";
 import {
@@ -21,67 +20,21 @@ import {
 } from "../../services/UserService";
 import { updateOffer } from "../../services/OfferService";
 import Modal from "react-bootstrap/Modal";
-import io from 'socket.io-client';
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
-import  { Document, Page,pdfjs } from "react-pdf";
-
-
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  'pdfjs-dist/build/pdf.worker.min.mjs',
-  import.meta.url,
-).toString();
-
-// Conectar al servidor de Socket.IO
-//const socket = io('http://localhost:5000')
 
 const Candidates = () => {
   const { state } = useLocation();
+  console.log("stateeeee",state)
   const [refresh, setRefresh] = useState(false);
   const [candidate, setCandidate] = useState(null);
   const [show, setShow] = useState(false);
-  /*Prueba de chat*/
-  const [name, setName] = useState('');
-  const [message, setMessage] = useState('');
-  const [messages, setMessages] = useState([]);
-
-
-  const [scale, setScale] = useState(1.0); // Estado para el nivel de zoom
-
-  const increaseZoom = () => setScale((prevScale) => prevScale + 0.2);
-  const decreaseZoom = () => setScale((prevScale) => Math.max(prevScale - 0.2, 0.5));
   const [cvUrl, setCvUrl] = useState(candidate?.cv);
   
-  // useEffect(() => {
-  //   // Escuchar los eventos desde el servidor
-  //   socket.on('send name', (username) => {
-  //     setMessages((prevMessages) => [
-  //       ...prevMessages,
-  //       { type: 'name', content: `${username}:` },
-  //     ]);
-  //   });
-
-  //   socket.on('send message', (chat) => {
-  //     setMessages((prevMessages) => [
-  //       ...prevMessages,
-  //       { type: 'message', content: chat },
-  //     ]);
-  //   });
-
-  //   return () => {
-  //     // Limpiar los listeners cuando el componente se desmonta
-  //     socket.off('send name');
-  //     socket.off('send message');
-  //   };
-  // }, []);
-
-  /******** */
 
 
   useEffect(() => {
     setCvUrl(candidate?.cv);
   }, [candidate]);
-
-
 
 
   function handleShow(candidateSelected) {
@@ -91,6 +44,7 @@ const Candidates = () => {
 
   const handleMatch = async (element) => {
     const user = await findUserByUid(element.uid);
+    console.log("userrr",user)
     await pushNotification(user.token, state);
     state.interestedUsers.forEach((interestedUser) => {
       if (interestedUser.uid === element.uid) {
@@ -101,6 +55,7 @@ const Candidates = () => {
     const offerUpdate = {
       id: state.id,
       interestedUsers: state.interestedUsers,
+      
     };
 
     await updateOffer(offerUpdate);
@@ -168,7 +123,7 @@ const Candidates = () => {
     },
     {
       name: "Aptitudes coincidentes",
-      selector: "aptcoincidentes",
+      selector: (row) => row.aptcoincidentes,
       sortable: true,
       width: "30%",
       center: true,
@@ -377,14 +332,46 @@ const Candidates = () => {
 
           <div>
             {console.log("candidate?.cv",cvUrl)}
-      {cvUrl ? (
+      {cvUrl  ? (
+  //      <PDFViewer
+  //      document={{
+  //          url: cvUrl,
+  //      }}
+  //  />
+        
+		// 	<Document
+    //   file={cvUrl}
+    //             onLoadError={onDocumentLoadError}
+    // >
+
+    //   <Page pageNumber={1} />
+    // </Document>
+      
+      //     <iframe 
+      //     src={cvUrl }
+      //     width="100%" 
+      //     height="600px" 
+      //     style={{border: "none",        overflow: 'hidden',
+      //     }}
+      //      frameborder="0"
+      //     >
+      // </iframe>
+      <div style={{ height: '750px' }}>
+       {/* <Worker workerUrl={pdfjs.GlobalWorkerOptions.workerSrc}>
+                <Viewer fileUrl={cvUrl} />
+            </Worker> */}
+  </div>
        
-          <DocumentViewer
-          pdfUrl={cvUrl}
-        />
       ) : (
         <p>No hay currículum disponible</p>
       )}
+
+      <img
+                      src={candidate?.certifications}
+                      alt="Certifications"
+                      style={{ width: "3em", height: "3em", }}
+                      //onClick={() => handleShow(row)}
+                  />
     </div>
         </Modal.Body>
       </Modal>
