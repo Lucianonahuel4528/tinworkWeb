@@ -39,8 +39,12 @@ function Register() {
             email: user.email,
             uid: auth.currentUser.uid,
           };
-          createUser(userSave);
-          navigate("/offers");
+          const userCreated = await createUser(userSave); // Espera el resultado de createUser
+          if (userCreated) {
+            navigate("/offers"); // Navega solo si se creó el usuario
+          } else {
+            setError("El usuario ya existe, intente con otro correo.");
+          }
         } catch (error) {
           if (error.code === "auth/invalid-email") {
             setError(
