@@ -9,6 +9,7 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { auth } from "../config/firebase";
+import { findUserByUid } from "../services/UserService";
 
 const authContext = createContext();
 
@@ -48,12 +49,31 @@ export function AuthProvider({ children }) {
   const logout = () => signOut(auth);
 
   useEffect(() => {
-    const unsubuscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-      setLoading(false);
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      if (currentUser) {      
+        // Llama a la función findUserByUid
+        const userData = await findUserByUid(currentUser.uid);
+        console.log("userDataaa",userData)
+        if (userData) {
+          const imageUrl = userData.imageProfile; // Accede a la URL de la imagen
+          // Combina la información del usuario
+          setUser({ ...currentUser, ...userData, photoURL: imageUrl });
+        } else {
+          setUser(currentUser); // Si no existe, establece solo el usuario actual
+        }
+      } else {
+        setUser(null); 
+      }
+      setLoading(false); // Termina la carga
     });
-    return () => unsubuscribe();
+
+
+    return () => unsubscribe();
   }, []);
+
+  const updateUserProfile = (newProfileData) => {
+    setUser((prevUser) => ({ ...prevUser, ...newProfileData }));
+  };
 
   return (
     <authContext.Provider
@@ -64,6 +84,7 @@ export function AuthProvider({ children }) {
         logout,
         loading,
         loginWithGoogle,
+        updateUserProfile 
       }}
     >
       {children}

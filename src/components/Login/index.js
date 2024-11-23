@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState,useEffect} from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { Button, Card, Form } from "react-bootstrap";
@@ -6,11 +6,11 @@ import "./style.css";
 import logoRecrutier from "../../logos/Reclutier.png";
 
 function Login() {
-  const [user, setUser] = useState({
+  const [userForm, setUserForm] = useState({
     email: "",
     password: "",
   });
-  const { login, loginWithGoogle } = useAuth();
+  const { login, loginWithGoogle,user,loading } = useAuth();
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
@@ -18,8 +18,8 @@ function Login() {
     e.preventDefault();
     setError("");
     try {
-      await login(user.email, user.password);
-      navigate("/offers");
+      await login(userForm.email, userForm.password);
+      //navigate("/offers");
     } catch (error) {
       if (error.code === "auth/wrong-password") {
         setError("La contraseña es incorrecta ingrese nuevamente");
@@ -30,6 +30,13 @@ function Login() {
     }
   };
 
+   
+   useEffect(() => {
+    if(user) {
+     navigate("/offers");
+    }
+    }, [user]);
+
   const handleGoogleSignin = async () => {
     try {
       await loginWithGoogle();
@@ -39,6 +46,7 @@ function Login() {
       setError(error.message);
     }
   };
+  if (loading) return <p>Cargando...</p>; // Opcional: muestra un loader mientras carga el estado de autenticación
 
   return (
     <div className="principal-login">
@@ -65,7 +73,7 @@ function Login() {
                 type="email"
                 placeholder="Ingresa tu correo"
                 autoComplete="email"
-                onChange={(e) => setUser({ ...user, email: e.target.value })}
+                onChange={(e) => setUserForm({ ...userForm, email: e.target.value })}
                 className="form-control"
                 required
               />
@@ -82,18 +90,19 @@ function Login() {
                 type="password"
                 placeholder="******"
                 autoComplete="current-password"
-                onChange={(e) => setUser({ ...user, password: e.target.value })}
+                onChange={(e) => setUserForm({ ...userForm, password: e.target.value })}
                 className="form-control"
                 required
               />
             </Form.Group>
 
             <Button variant="primary" type="submit">
-              Login
+            Iniciar sesión
+
             </Button>
            
             <p className="my-4 text-sm flex justify-between px-3">
-              No tiene una cuenta?&nbsp;&nbsp;
+              No tenes una cuenta?&nbsp;&nbsp;
               <Link
                 to="/register"
                 className="text-blue-700 hover:text-blue-900"
