@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Dropdown } from "react-bootstrap";
+import { Button, Dropdown, Image } from "react-bootstrap";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
@@ -16,7 +16,6 @@ const Header = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const [reload, setReload] = useState(false);
-
   return (
     <Navbar bg="light" expand="lg">
       <Container>
@@ -70,6 +69,15 @@ const Header = () => {
         {user && (
           <Dropdown className="dropdown-cuenta">
             <Dropdown.Toggle variant="light" id="dropdown-basic">
+             <Image
+                src={user.photoURL ||         "https://w7.pngwing.com/pngs/223/244/png-transparent-computer-icons-avatar-user-profile-avatar-heroes-rectangle-black.png"
+                } // Asumiendo que user.photoURL contiene la URL de la imagen
+                roundedCircle
+                width="30" // Tamaño del avatar
+                height="30"
+                alt="User Avatar"
+                className="me-2" // Espaciado entre la imagen y el nombre
+              /> 
               {user.displayName}
             </Dropdown.Toggle>
             <Dropdown.Menu>
@@ -85,7 +93,7 @@ const Header = () => {
             }}
             variant="primary"
           >
-            log in
+            Iniciar sesión
           </Button>
         ) : (
           <Button
