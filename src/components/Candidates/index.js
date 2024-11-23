@@ -29,17 +29,34 @@ const Candidates = () => {
   const [candidate, setCandidate] = useState(null);
   const [show, setShow] = useState(false);
   const [cvUrl, setCvUrl] = useState(candidate?.cv);
-  
+  const [certifications,setCertifications] = useState([])
+  const [currentIndex, setCurrentIndex] = useState(0);
 
+  const handlePrev = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === 0 ? certifications.length - 1 : prevIndex - 1
+    );
+  };
+
+  const handleNext = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === certifications.length - 1 ? 0 : prevIndex + 1
+    );
+  };
 
   useEffect(() => {
     setCvUrl(candidate?.cv);
   }, [candidate]);
 
 
-  function handleShow(candidateSelected) {
+  const  handleShow= async (candidateSelected) => {
+    const user = await findUserByUid(candidateSelected.uid);    
     setShow(true);
+    setCertifications(user.certifications);
     setCandidate(candidateSelected);
+
+    setRefresh(!refresh);
+
   }
 
   const handleMatch = async (element) => {
@@ -332,46 +349,38 @@ const Candidates = () => {
 
           <div>
             {console.log("candidate?.cv",cvUrl)}
-      {cvUrl  ? (
-  //      <PDFViewer
-  //      document={{
-  //          url: cvUrl,
-  //      }}
-  //  />
+            {console.log("certifications",candidate)}
+            <h6>Certificaciones</h6>
+
+      { certifications.length > 0 ? 
+      // <div className="certificaciones-container">
+      //      {certifications.map((certification) => (
+      //       <div  className="certificacion" onClick={() => /*handleImageClick(certificacion.imagen)*/console.log()}>
+      //          <img src={certification}  />
+      //         </div>
+      //      ))}
+      //    </div>
+            <div className="carrusel-container">
+            <button className="carrusel-button" onClick={handlePrev}>
+              ◀
+            </button>
+            <div className="carrusel-slide">
+              <img
+                src={certifications[currentIndex]}
+              />
+            </div>
+            <button className="carrusel-button" onClick={handleNext}>
+              ▶
+            </button>
+          </div>
         
-		// 	<Document
-    //   file={cvUrl}
-    //             onLoadError={onDocumentLoadError}
-    // >
+       : <section className="modal-body-description">
+            <p>El candidato/a no cargo certificaciones en su perfil.</p>
+          </section>
 
-    //   <Page pageNumber={1} />
-    // </Document>
+      }
       
-      //     <iframe 
-      //     src={cvUrl }
-      //     width="100%" 
-      //     height="600px" 
-      //     style={{border: "none",        overflow: 'hidden',
-      //     }}
-      //      frameborder="0"
-      //     >
-      // </iframe>
-      <div style={{ height: '750px' }}>
-       {/* <Worker workerUrl={pdfjs.GlobalWorkerOptions.workerSrc}>
-                <Viewer fileUrl={cvUrl} />
-            </Worker> */}
-  </div>
-       
-      ) : (
-        <p>No hay currículum disponible</p>
-      )}
-
-      <img
-                      src={candidate?.certifications}
-                      alt="Certifications"
-                      style={{ width: "3em", height: "3em", }}
-                      //onClick={() => handleShow(row)}
-                  />
+      
     </div>
         </Modal.Body>
       </Modal>
