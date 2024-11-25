@@ -231,8 +231,8 @@ const Candidates = () => {
 
   //Para sacar la cantidad de aptitudes coincidentes
   let count = 0;
-  const abilitiesOffer = state.requiredAbilities;
-  state.interestedUsers.map((e) => {
+  const abilitiesOffer = state?.requiredAbilities;
+  state?.interestedUsers.map((e) => {
     const abilitiesUser = e.abilities;
     abilitiesUser.forEach((ability) => {
       if (abilitiesOffer.includes(ability)) {
@@ -260,7 +260,7 @@ const Candidates = () => {
             </div>
           </Link>
 
-          <Card.Title>{state.title}</Card.Title>
+          <Card.Title>{state?.title}</Card.Title>
         </div>
       </nav>
 
@@ -302,7 +302,7 @@ const Candidates = () => {
       <section className="table-candidates">
         <DataTable
           columns={columnas}
-          data={state.interestedUsers}
+          data={state?.interestedUsers}
           noDataComponent={"No hay candidatos interesados"}
         />
       </section>
