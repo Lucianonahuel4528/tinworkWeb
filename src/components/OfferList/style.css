@@ -7,3 +7,17 @@
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
 }
+
+.filters {
+    /* display: flex; */
+    /* margin-bottom: 10px; */
+    margin-left: 5%;
+  }
+  
+  .filters input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+    max-width: 300px;
+  }
