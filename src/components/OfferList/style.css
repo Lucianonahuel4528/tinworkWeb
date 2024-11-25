@@ -11,6 +11,9 @@
 .filters {
     /* display: flex; */
     /* margin-bottom: 10px; */
+    display: flex;
+    justify-content: start; 
+    margin-top: 1%;
     margin-left: 5%;
   }
   
@@ -20,4 +23,14 @@
     border-radius: 5px;
     width: 100%;
     max-width: 300px;
+    margin-left: 2%;
+  }
+
+  .filters select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+    max-width: 300px;
+    margin-left: 2%;
   }
