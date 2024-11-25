@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import "./style.css";
 import { Card } from "react-bootstrap";
 import { BsArrowLeftSquare } from "react-icons/bs";
-import { IoIosPeople, IoMdHeartEmpty, IoMdEye  } from "react-icons/io";
+import { IoIosPeople, IoMdHeartEmpty, IoMdEye } from "react-icons/io";
 import { TbFileDescription } from "react-icons/tb";
 import { AiOutlineStar } from "react-icons/ai";
 import { IconContext } from "react-icons";
@@ -29,7 +29,7 @@ const Candidates = () => {
   const [candidate, setCandidate] = useState(null);
   const [show, setShow] = useState(false);
   const [cvUrl, setCvUrl] = useState(candidate?.cv);
-  const [certifications,setCertifications] = useState([])
+  const [certifications, setCertifications] = useState([])
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const handlePrev = () => {
@@ -49,8 +49,8 @@ const Candidates = () => {
   }, [candidate]);
 
 
-  const  handleShow= async (candidateSelected) => {
-    const user = await findUserByUid(candidateSelected.uid);    
+  const handleShow = async (candidateSelected) => {
+    const user = await findUserByUid(candidateSelected.uid);
     setShow(true);
     setCertifications(user.certifications);
     setCandidate(candidateSelected);
@@ -61,7 +61,7 @@ const Candidates = () => {
 
   const handleMatch = async (element) => {
     const user = await findUserByUid(element.uid);
-    console.log("userrr",user)
+    console.log("userrr", user)
     await pushNotification(user.token, state);
     state.interestedUsers.forEach((interestedUser) => {
       if (interestedUser.uid === element.uid) {
@@ -72,7 +72,7 @@ const Candidates = () => {
     const offerUpdate = {
       id: state.id,
       interestedUsers: state.interestedUsers,
-      
+
     };
 
     await updateOffer(offerUpdate);
@@ -109,27 +109,27 @@ const Candidates = () => {
       cell: (row) => (
         <div>
           <Tooltip title="Ver perfil" placement="left" arrow>
-          <IconButton>
-        {row.imageProfile ? (
-            <img
-                src={row.imageProfile}
-                alt="Profile"
-                style={{ width: "2em", height: "2em", borderRadius: "50%" }}
-                onClick={() => handleShow(row)}
-            />
-        ) : (
-          
-            <BsPersonCircle
-                size="2em"
-                type="button"
-                onClick={() => handleShow(row)}
-            />
-         
-        
-        )}
-         </IconButton>
-         </Tooltip>
-    </div>
+            <IconButton>
+              {row.imageProfile ? (
+                <img
+                  src={row.imageProfile}
+                  alt="Profile"
+                  style={{ width: "2em", height: "2em", borderRadius: "50%" }}
+                  onClick={() => handleShow(row)}
+                />
+              ) : (
+
+                <BsPersonCircle
+                  size="2em"
+                  type="button"
+                  onClick={() => handleShow(row)}
+                />
+
+
+              )}
+            </IconButton>
+          </Tooltip>
+        </div>
       ),
     },
     {
@@ -192,38 +192,38 @@ const Candidates = () => {
       center: true,
 
       cell: (row) => (
-        <div>           
+        <div>
           <Tooltip title="Descartar" placement="top" arrow>
-          <IconButton>
-          <TiDeleteOutline
-            size="1.8em"
-            type="button"
-            onClick={() => handleNoMatch(row)}
-            style={{ cursor: 'pointer' }}
-          />
-              </IconButton>
+            <IconButton>
+              <TiDeleteOutline
+                size="1.8em"
+                type="button"
+                onClick={() => handleNoMatch(row)}
+                style={{ cursor: 'pointer' }}
+              />
+            </IconButton>
 
-        </Tooltip>
-       
-        <Tooltip title="Matchear" placement="top" arrow>
-        <IconButton>
-        <IoMdHeartEmpty
-            onClick={() => handleMatch(row)}
-            size="1.8em"
-            type="button"
-          />
-        </IconButton>
-        </Tooltip>
-     
-        <Tooltip title="Ver perfil" placement="top" arrow>
-        <IconButton>
-          < IoMdEye
-            onClick={ () => handleShow(row)  } 
-            size="2em"
-            type="button"
-            />
-           </IconButton>
-           </Tooltip>
+          </Tooltip>
+
+          <Tooltip title="Matchear" placement="top" arrow>
+            <IconButton>
+              <IoMdHeartEmpty
+                onClick={() => handleMatch(row)}
+                size="1.8em"
+                type="button"
+              />
+            </IconButton>
+          </Tooltip>
+
+          <Tooltip title="Ver perfil" placement="top" arrow>
+            <IconButton>
+              < IoMdEye
+                onClick={() => handleShow(row)}
+                size="2em"
+                type="button"
+              />
+            </IconButton>
+          </Tooltip>
         </div>
       ),
     },
@@ -249,9 +249,6 @@ const Candidates = () => {
     count = 0;
   });
 
-  const handleError = (error) => {
-    console.error('Error al cargar el CV:', error);
-  };
 
   return (
     <div>
@@ -289,15 +286,15 @@ const Candidates = () => {
               </a>
             </li>
             <li>
-            <Link
-              to="/chats"
-              state={state} // Pasar el estado aquí
-              className="nav-link link-dark"
-            >
-              <IoChatbubbleEllipsesOutline />
-              Chat
-            </Link>
-          </li>
+              <Link
+                to="/chats"
+                state={state} // Pasar el estado aquí
+                className="nav-link link-dark"
+              >
+                <IoChatbubbleEllipsesOutline />
+                Chat
+              </Link>
+            </li>
           </IconContext.Provider>
         </ul>
       </aside>
@@ -315,6 +312,8 @@ const Candidates = () => {
         size="lg"
         centered={true}
         onHide={() => setShow(false)}
+       
+        style={ {height:"95%"}}
       >
         <Modal.Header closeButton>
           <Modal.Title>{candidate?.name}</Modal.Title>
@@ -329,7 +328,7 @@ const Candidates = () => {
               />
             </figure>
             <div className="section-figure__detail">
-              <h6>Correo</h6>
+              <h6>Correo electrónico</h6>
               <h5>{candidate?.email}</h5>
               <h6>Ubicacion</h6>
               <h5>{candidate?.location}</h5>
@@ -347,41 +346,63 @@ const Candidates = () => {
             <p>{candidate?.description}</p>
           </section>
 
-          <div>
-            {console.log("candidate?.cv",cvUrl)}
-            {console.log("certifications",candidate)}
-            <h6>Certificaciones</h6>
+          <section className="modal-body-description"
+              style={{ marginBottom: '10px' }} // Añadir espacio entre "Currículum Vitae" y "Certificaciones"
 
-      { certifications.length > 0 ? 
-      // <div className="certificaciones-container">
-      //      {certifications.map((certification) => (
-      //       <div  className="certificacion" onClick={() => /*handleImageClick(certificacion.imagen)*/console.log()}>
-      //          <img src={certification}  />
-      //         </div>
-      //      ))}
-      //    </div>
-            <div className="carrusel-container">
-            <button className="carrusel-button" onClick={handlePrev}>
-              ◀
-            </button>
-            <div className="carrusel-slide">
-              <img
-                src={certifications[currentIndex]}
-              />
-            </div>
-            <button className="carrusel-button" onClick={handleNext}>
-              ▶
-            </button>
-          </div>
-        
-       : <section className="modal-body-description">
-            <p>El candidato/a no cargo certificaciones en su perfil.</p>
+          >
+
+            {cvUrl ? (
+              <a
+                href={cvUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  textDecoration: 'none',
+        color: '#007bff',
+        fontWeight: 'bold',
+        display: 'inline-block', // Mantener formato consistente
+        margin: '10px 0', // Ajuste del espacio superior e inferior
+        padding: '8px 16px', // Espaciado interno
+        border: '1px solid #007bff', // Borde azul
+        borderRadius: '5px', // Bordes redondeados
+        backgroundColor: '#f9f9f9', // Fondo claro
+        cursor: 'pointer',
+        transition: 'background-color 0.3s ease', // Efecto de hover
+                }}
+              >
+                Visualizar Currículum 
+              </a>
+            ) : 
+            
+            null }
           </section>
 
-      }
-      
-      
-    </div>
+
+          <h6>Certificaciones</h6>
+
+          {certifications?.length > 0 ?
+
+            <div className="carrusel-container">
+              <button className="carrusel-button" onClick={handlePrev}>
+                ◀
+              </button>
+              <div className="carrusel-slide">
+                <img
+                  src={certifications[currentIndex]}
+                />
+              </div>
+              <button className="carrusel-button" onClick={handleNext}>
+                ▶
+              </button>
+            </div>
+
+            : <section className="modal-body-description">
+              <p>El candidato/a no cargo certificaciones en su perfil.</p>
+            </section>
+
+          }
+
+
         </Modal.Body>
       </Modal>
     </div>
