@@ -5,9 +5,11 @@
 }
 
 .card-title {
-  color: white;
+  color: white !important;
   margin-right: 50%;
+  
 }
+
 
 .element {
   font-size: 30px;
