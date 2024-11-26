@@ -24,14 +24,14 @@ import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
 
 const Candidates = () => {
   const { state } = useLocation();
-  console.log("stateeeee",state)
+  const currentLocation = useLocation();
+
   const [refresh, setRefresh] = useState(false);
   const [candidate, setCandidate] = useState(null);
   const [show, setShow] = useState(false);
   const [cvUrl, setCvUrl] = useState(candidate?.cv);
   const [certifications, setCertifications] = useState([])
   const [currentIndex, setCurrentIndex] = useState(0);
-
   const handlePrev = () => {
     setCurrentIndex((prevIndex) =>
       prevIndex === 0 ? certifications.length - 1 : prevIndex - 1
@@ -267,13 +267,13 @@ const Candidates = () => {
       <aside className="sidebar">
         <ul className="nav  flex-column ">
           <IconContext.Provider value={{ size: "3em" }}>
-            <li className="nav-item ">
-              <a href="/candidates" className="nav-link link-dark">
+          <li className={`nav-item ${currentLocation.pathname === '/candidates' ? 'active' : ''}`}>
+          <a href="/candidates" className="nav-link link-dark"> 
                 <IoIosPeople />
                 Candidatos
-              </a>
+               </a> 
             </li>
-            <li>
+            {/* <li>
               <a href="#" className="nav-link link-dark">
                 <TbFileDescription />
                 Descripción
@@ -284,11 +284,11 @@ const Candidates = () => {
                 <AiOutlineStar />
                 Aptitudes requeridas
               </a>
-            </li>
-            <li>
-              <Link
+            </li> */}
+            <li className={`nav-item ${currentLocation.pathname === '/chats' ? 'active' : ''}`}>
+            <Link
                 to="/chats"
-                state={state} // Pasar el estado aquí
+                state={state} 
                 className="nav-link link-dark"
               >
                 <IoChatbubbleEllipsesOutline />
