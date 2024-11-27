@@ -19,10 +19,16 @@ import Modal from "react-bootstrap/Modal";
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
 import { IoSend } from 'react-icons/io5';
 import { createMessage, listenForMessages } from "../../services/ChatService.js";
+import { useAuth } from "../../context/AuthContext.js";
+import { Card } from "react-bootstrap";
+import Tooltip from '@mui/material/Tooltip';
+import IconButton from '@mui/material/IconButton';
 
 
 const Chats = () => {
   const location = useLocation();
+  const currentLocation = useLocation();
+
   const state = location.state;
   
   const [refresh, setRefresh] = useState(false);
@@ -118,20 +124,25 @@ const Chats = () => {
       center: true,
       cell: (row) => (
         <div>
+          <Tooltip title="Conversar" placement="left" arrow>
+          <IconButton>
         {row.imageProfile ? (
             <img
                 src={row.imageProfile}
                 alt="Profile"
-                style={{ width: "3em", height: "3em", borderRadius: "50%" }}
+                style={{ width: "2em", height: "2em", borderRadius: "50%" }}
                 onClick={() => handleShow(row)}
             />
         ) : (
             <BsPersonCircle
-                size="3em"
+                size="2em"
                 type="button"
                 onClick={() => handleShow(row)}
             />
         )}
+        </IconButton>
+        </Tooltip>
+
     </div>
       ),
     },
@@ -189,13 +200,16 @@ const Chats = () => {
 
       cell: (row) => (
         <div>
-          
+           <Tooltip title="Conversar" placement="top" arrow>
+           <IconButton>
           <IoChatbubbleEllipsesOutline 
              onClick={() =>handleShow(row)}
              size="2em"
              type="button"
           
           />
+          </IconButton>
+          </Tooltip>
         </div>
       ),
     },
@@ -211,20 +225,23 @@ const Chats = () => {
             </div>
           </Link>
 
-          {/* <Card.Title>{state.title}</Card.Title> */}
+          <Card.Title>Chats</Card.Title> 
         </div>
       </nav>
 
       <aside className="sidebar">
         <ul className="nav  flex-column ">
           <IconContext.Provider value={{ size: "3em" }}>
-            <li className="nav-item ">
-              <a href="/candidates" className="nav-link link-dark">
-                <IoIosPeople />
+          <Link
+                to="/candidates"
+                state={state} // Pasar el estado aquí
+                className="nav-link link-dark"
+              >
+            <IoIosPeople />
                 Candidatos
-              </a>
-            </li>
-            <li>
+           
+            </Link>
+            {/* <li>
               <a href="#" className="nav-link link-dark">
                 <TbFileDescription />
                 Descripción
@@ -235,12 +252,16 @@ const Chats = () => {
                 <AiOutlineStar />
                 Aptitudes requeridas
               </a>
-            </li>
-            <li>
-              <a href="#" className="nav-link link-dark">
-              <IoChatbubbleEllipsesOutline />
+            </li> */}
+            <li className={`nav-item ${currentLocation.pathname === '/chats' ? 'active' : ''}`}>
+            <Link
+                to="/chats"
+                state={state} 
+                className="nav-link link-dark"
+              >
+                <IoChatbubbleEllipsesOutline />
                 Chat
-              </a>
+              </Link>
             </li>
           </IconContext.Provider>
         </ul>
@@ -249,7 +270,7 @@ const Chats = () => {
       <section className="table-candidates">
         <DataTable
           columns={columnas}
-          data={state.interestedUsers}
+          data={state?.interestedUsers}
           noDataComponent={"No hay candidatos interesados"}
         />
       </section>
