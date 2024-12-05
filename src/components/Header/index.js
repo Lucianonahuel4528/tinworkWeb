@@ -100,13 +100,13 @@ const Header = () => {
             onClick={async () => {
               const result = await logout();
               if (result) {
-                navigate("/");
+                navigate("/login");
                 setReload(!reload);
               }
             }}
             variant="primary"
           >
-            log out
+            Cerrar sesión
           </Button>
         )}
       </Container>
